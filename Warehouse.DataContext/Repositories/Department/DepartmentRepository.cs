@@ -48,6 +48,8 @@ namespace Warehouse.DataContext.Repositories.Department
 
         public async Task<DepartmentModel> UpdateDepartmentAsync(DepartmentEntity department)
         {
+            Logger.LogInformation("Updating department with id... : {0}", department.Id);
+
             DbSet.Update(department);
 
             var result = Mapper.Map<DepartmentModel>(department);

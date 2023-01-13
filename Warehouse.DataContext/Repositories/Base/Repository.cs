@@ -25,6 +25,8 @@ namespace Warehouse.DataContext.Repositories.Base
 
         public async Task<List<TModel>> GetAllAsync()
         {
+            Logger.LogInformation("Get all objects with name {0}... :", typeof(TEntity).Name);
+
             var entities = await DbSet.AsNoTracking()
                 .ToListAsync();
 

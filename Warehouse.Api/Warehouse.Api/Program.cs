@@ -1,8 +1,12 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Warehouse.Api;
+using Warehouse.Api.Middlewares;
 using Warehouse.DataContext;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddMyDependencyGroup();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -16,6 +20,7 @@ builder.Services.AddMediatR(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+var logger = app.Services.GetRequiredService<ILogger>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -23,6 +28,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.ConfigureExceptionHandler(logger);
 
 app.UseHttpsRedirection();
 

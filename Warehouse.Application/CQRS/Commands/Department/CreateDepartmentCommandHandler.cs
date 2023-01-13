@@ -18,6 +18,7 @@ namespace Warehouse.Application.CQRS.Commands.Department
         {
             var newDepartment = new DepartmentEntity
             {
+                Id = Guid.NewGuid(),
                 Name = request.Name
             };
 
@@ -25,7 +26,7 @@ namespace Warehouse.Application.CQRS.Commands.Department
             
             if(departmentModel is null)
             {
-                throw new ArgumentNullException(nameof(departmentModel));
+                throw new ArgumentNullException("Cannot find department");
             }
 
             await UnitOfWork.SaveChangesAsync();

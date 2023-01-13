@@ -16,21 +16,29 @@ namespace Warehouse.Application.CQRS.Commands.Department
 
         public async Task<DepartmentModel> Handle(UpdateDepartmentCommand request, CancellationToken cancellationToken)
         {
-            var updateDepartment = new DepartmentEntity
-            {
-                Name = request.Name,
-            };
-
-            var departmentModel = await UnitOfWork.Department.UpdateDepartmentAsync(updateDepartment);
+            var departmentModel = await UnitOfWork.Department.GetByIdAsync(request.Id);
 
             if(departmentModel is null)
             {
-                throw new ArgumentNullException(nameof(departmentModel));
+                throw new ArgumentNullException("Cannot find department... ");
+            }
+
+            var deparmentEntity = new DepartmentEntity
+            {
+                Id = departmentModel.Id,
+                Name = request.Name,
+            };
+
+            var updatedDepartmentModel = await UnitOfWork.Department.UpdateDepartmentAsync(deparmentEntity);
+
+            if(updatedDepartmentModel is null)
+            {
+                throw new ArgumentNullException("Cannot find department");
             }
 
             await UnitOfWork.SaveChangesAsync();
 
-            return departmentModel;
+            return updatedDepartmentModel;
         }
     }
 }
