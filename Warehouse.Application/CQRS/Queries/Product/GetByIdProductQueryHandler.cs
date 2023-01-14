@@ -19,7 +19,7 @@ namespace Warehouse.Application.CQRS.Queries.Product
 
             if (productModel is null)
             {
-                throw new ArgumentNullException("Cannot find product... ");
+                throw new ArgumentNullException("cannot find product... ");
             }
 
             return productModel;
