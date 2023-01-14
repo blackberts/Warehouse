@@ -32,7 +32,7 @@ namespace Warehouse.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost("update-product")]
+        [HttpPut("update-product")]
         public async Task<IActionResult> Update(UpdateProductCommand command)
         {
             var result = await Mediator.Send(command);
@@ -48,7 +48,7 @@ namespace Warehouse.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost("delete-product")]
+        [HttpDelete("delete-product")]
         public async Task<IActionResult> Delete(DeleteProductCommand command)
         {
             var result = await Mediator.Send(command);

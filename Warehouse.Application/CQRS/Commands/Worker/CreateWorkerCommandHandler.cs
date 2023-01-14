@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Warehouse.Application.CQRS.Commands.Base;
 using Warehouse.Application.UoW;
 using Warehouse.Domain.Models;
@@ -7,14 +8,15 @@ using WorkerEntity = Warehouse.Domain.Entities.Worker;
 
 namespace Warehouse.Application.CQRS.Commands.Worker
 {
-    public class CreateWorkerCommandHandler : BaseCommandHandler, IRequestHandler<CreateWorkerCommand, WorkerModel>
+    public class CreateWorkerCommandHandler : BaseCommandHandler<CreateWorkerCommand, WorkerModel>
     {
         public CreateWorkerCommandHandler(IMapper mapper,
-            IUnitOfWork unitOfWork) : base(mapper, unitOfWork)
+            IUnitOfWork unitOfWork,
+            ILogger logger) : base(mapper, unitOfWork, logger)
         {
         }
 
-        public async Task<WorkerModel> Handle(CreateWorkerCommand request, CancellationToken cancellationToken)
+        protected override async Task<WorkerModel> ExecuteAsync(CreateWorkerCommand request, CancellationToken cancellationToken)
         {
             var newWorker = new WorkerEntity
             {

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using MediatR;
 using Microsoft.Extensions.Logging;
 using Warehouse.Application.CQRS.Commands.Base;
 using Warehouse.Application.UoW;
@@ -8,15 +7,15 @@ using WorkerEntity = Warehouse.Domain.Entities.Worker;
 
 namespace Warehouse.Application.CQRS.Commands.Worker
 {
-    public class UpdateWorkerCommandHandler : BaseCommandHandler<UpdateWorkerCommand, WorkerModel>
+    public class UpdateWorkerFirstNameCommandHandler : BaseCommandHandler<UpdateWorkerFirstNameCommand, WorkerModel>
     {
-        public UpdateWorkerCommandHandler(IMapper mapper,
+        public UpdateWorkerFirstNameCommandHandler(IMapper mapper,
             IUnitOfWork unitOfWork,
             ILogger logger) : base(mapper, unitOfWork, logger)
         {
         }
 
-        protected override async Task<WorkerModel> ExecuteAsync(UpdateWorkerCommand request, CancellationToken cancellationToken)
+        protected override async Task<WorkerModel> ExecuteAsync(UpdateWorkerFirstNameCommand request, CancellationToken cancellationToken)
         {
             var workerModel = await UnitOfWork.Worker.GetByIdAsync(request.Id);
 
@@ -29,15 +28,15 @@ namespace Warehouse.Application.CQRS.Commands.Worker
             {
                 Id = workerModel.Id,
                 FirstName = request.FirstName,
-                LastName = request.LastName,
-                FullName = request.FirstName + " " + request.LastName,
+                LastName = workerModel.LastName,
+                FullName = request.FirstName + " " + workerModel.LastName,
             };
 
-            var updatedWorkerModel = await UnitOfWork.Worker.UpdateWorkerAsync(workerEntity);
+            var updatedWorkerModel = await UnitOfWork.Worker.UpdateWorkerFirstNameAsync(workerEntity);
 
             if (updatedWorkerModel is null)
             {
-                throw new ArgumentNullException("Something wrong when updated worker... ");
+                throw new ArgumentNullException("Something wrong when updated first name worker... ");
             }
 
             await UnitOfWork.SaveChangesAsync();

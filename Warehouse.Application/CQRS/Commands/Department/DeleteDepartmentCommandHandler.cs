@@ -1,18 +1,21 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Warehouse.Application.CQRS.Commands.Base;
 using Warehouse.Application.UoW;
+using Warehouse.Domain.Models;
 
 namespace Warehouse.Application.CQRS.Commands.Department
 {
-    internal class DeleteDepartmentCommandHandler : BaseCommandHandler, IRequestHandler<DeleteDepartmentCommand>
+    public class DeleteDepartmentCommandHandler : BaseCommandHandler<DeleteDepartmentCommand, Unit>
     {
         public DeleteDepartmentCommandHandler(IMapper mapper,
-            IUnitOfWork unitOfWork) : base(mapper, unitOfWork)
+            IUnitOfWork unitOfWork,
+            ILogger logger) : base(mapper, unitOfWork, logger)
         {
         }
 
-        public async Task<Unit> Handle(DeleteDepartmentCommand request, CancellationToken cancellationToken)
+        protected override async Task<Unit> ExecuteAsync(DeleteDepartmentCommand request, CancellationToken cancellationToken)
         {
             UnitOfWork.Department.DeleteById(request.Id);
 

@@ -1,19 +1,21 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Warehouse.Application.CQRS.Queries.Base;
 using Warehouse.Application.UoW;
 using Warehouse.Domain.Models;
 
 namespace Warehouse.Application.CQRS.Queries.Department
 {
-    internal class GetByIdDepartmentQueryHandler : BaseQueryHandler, IRequestHandler<GetByIdDepartmentQuery, DepartmentModel>
+    public class GetByIdDepartmentQueryHandler : BaseQueryHandler<GetByIdDepartmentQuery, DepartmentModel>
     {
-        public GetByIdDepartmentQueryHandler(IMapper mapper
-            , IUnitOfWork unitOfWork) : base(mapper, unitOfWork)
+        public GetByIdDepartmentQueryHandler(IMapper mapper,
+            IUnitOfWork unitOfWork,
+            ILogger logger) : base(mapper, unitOfWork, logger)
         {
         }
 
-        public async Task<DepartmentModel> Handle(GetByIdDepartmentQuery request, CancellationToken cancellationToken)
+        protected override async Task<DepartmentModel> ExecuteAsync(GetByIdDepartmentQuery request, CancellationToken cancellationToken)
         {
             var departmentModel = await UnitOfWork.Department.GetByIdAsync(request.Id);
 

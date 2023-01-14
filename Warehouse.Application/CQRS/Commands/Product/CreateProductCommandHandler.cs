@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Warehouse.Application.CQRS.Commands.Base;
 using Warehouse.Application.UoW;
 using Warehouse.Domain.Models;
@@ -7,14 +8,15 @@ using ProductEntity = Warehouse.Domain.Entities.Product;
 
 namespace Warehouse.Application.CQRS.Commands.Product
 {
-    public class CreateProductCommandHandler : BaseCommandHandler, IRequestHandler<CreateProductCommand, ProductModel>
+    public class CreateProductCommandHandler : BaseCommandHandler<CreateProductCommand, ProductModel>
     {
         public CreateProductCommandHandler(IMapper mapper,
-            IUnitOfWork unitOfWork) : base(mapper, unitOfWork)
+            IUnitOfWork unitOfWork,
+            ILogger logger) : base(mapper, unitOfWork, logger)
         {
         }
 
-        public async Task<ProductModel> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+        protected override async Task<ProductModel> ExecuteAsync(CreateProductCommand request, CancellationToken cancellationToken)
         {
             var newProduct = new ProductEntity
             {

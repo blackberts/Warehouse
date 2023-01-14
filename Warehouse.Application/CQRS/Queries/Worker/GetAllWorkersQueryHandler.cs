@@ -1,19 +1,21 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Warehouse.Application.CQRS.Queries.Base;
 using Warehouse.Application.UoW;
 using Warehouse.Domain.Models;
 
 namespace Warehouse.Application.CQRS.Queries.Worker
 {
-    public class GetAllWorkersQueryHandler : BaseQueryHandler, IRequestHandler<GetAllWorkersQuery, List<WorkerModel>>
+    public class GetAllWorkersQueryHandler : BaseQueryHandler<GetAllWorkersQuery, List<WorkerModel>>
     {
         public GetAllWorkersQueryHandler(IMapper mapper,
-            IUnitOfWork unitOfWork) : base(mapper, unitOfWork)
+            IUnitOfWork unitOfWork,
+            ILogger logger) : base(mapper, unitOfWork, logger)
         {
         }
 
-        public async Task<List<WorkerModel>> Handle(GetAllWorkersQuery request, CancellationToken cancellationToken)
+        protected override async Task<List<WorkerModel>> ExecuteAsync(GetAllWorkersQuery request, CancellationToken cancellationToken)
         {
             var listOfModels = await UnitOfWork.Worker.GetAllAsync();
 

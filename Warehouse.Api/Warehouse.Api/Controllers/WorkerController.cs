@@ -32,8 +32,24 @@ namespace Warehouse.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost("update-worker")]
+        [HttpPut("update-worker")]
         public async Task<IActionResult> Update(UpdateWorkerCommand command)
+        {
+            var result = await Mediator.Send(command);
+
+            return Ok(result);
+        }
+
+        [HttpOptions("update-worker-firstName")]
+        public async Task<IActionResult> UpdateFirstName(UpdateWorkerFirstNameCommand command)
+        {
+            var result = await Mediator.Send(command);
+
+            return Ok(result);
+        }
+
+        [HttpOptions("update-worker-lastName")]
+        public async Task<IActionResult> UpdateLastName(UpdateWorkerLastNameCommand command)
         {
             var result = await Mediator.Send(command);
 
@@ -48,7 +64,7 @@ namespace Warehouse.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost("delete-worker")]
+        [HttpDelete("delete-worker")]
         public async Task<IActionResult> Delete(DeleteWorkerCommand command)
         {
             var result = await Mediator.Send(command);
