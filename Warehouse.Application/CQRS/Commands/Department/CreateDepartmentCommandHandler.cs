@@ -26,7 +26,7 @@ namespace Warehouse.Application.CQRS.Commands.Department
             
             if(departmentModel is null)
             {
-                throw new ArgumentNullException("Cannot find department");
+                throw new ArgumentNullException("Something wrong when created department... ");
             }
 
             await UnitOfWork.SaveChangesAsync();

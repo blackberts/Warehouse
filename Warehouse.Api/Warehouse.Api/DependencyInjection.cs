@@ -1,5 +1,6 @@
 ﻿using Warehouse.Application.UoW;
 using Warehouse.DataContext.Repositories.Department;
+using Warehouse.DataContext.Repositories.Product;
 
 namespace Warehouse.Api
 {
@@ -12,6 +13,7 @@ namespace Warehouse.Api
             services.AddSingleton(typeof(ILogger), logger);
 
             services.AddTransient<IDepartmentRepository, DepartmentRepository>();
+            services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
         }
     }
