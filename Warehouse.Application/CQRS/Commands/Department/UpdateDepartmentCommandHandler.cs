@@ -33,7 +33,7 @@ namespace Warehouse.Application.CQRS.Commands.Department
 
             if(updatedDepartmentModel is null)
             {
-                throw new ArgumentNullException("Cannot find department");
+                throw new ArgumentNullException("Something wrong when updated department... ");
             }
 
             await UnitOfWork.SaveChangesAsync();

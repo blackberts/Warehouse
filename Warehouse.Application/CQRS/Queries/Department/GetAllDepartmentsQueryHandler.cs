@@ -19,7 +19,7 @@ namespace Warehouse.Application.CQRS.Queries.Department
 
             if(listOfModels is null || listOfModels.Count == 0)
             {
-                throw new ArgumentNullException("Departments list is empty");
+                throw new ArgumentNullException("Department list is empty... ");
             }
 
             return listOfModels;
