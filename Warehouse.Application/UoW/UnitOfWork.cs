@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Warehouse.DataContext;
 using Warehouse.DataContext.Repositories.Department;
 using Warehouse.DataContext.Repositories.Product;
+using Warehouse.DataContext.Repositories.Worker;
 
 namespace Warehouse.Application.UoW
 {
@@ -36,6 +37,15 @@ namespace Warehouse.Application.UoW
             get
             {
                 return _productRepository ??= new ProductRepository(_logger, _mapper, _dbContext);
+            }
+        }
+
+        private IWorkerRepository _workerRepository;
+        public IWorkerRepository Worker
+        {
+            get
+            {
+                return _workerRepository ??= new WorkerRepository(_logger, _mapper, _dbContext);
             }
         }
 
