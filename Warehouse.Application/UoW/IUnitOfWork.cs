@@ -1,5 +1,6 @@
 ﻿using Warehouse.DataContext.Repositories.Department;
 using Warehouse.DataContext.Repositories.Product;
+using Warehouse.DataContext.Repositories.Worker;
 
 namespace Warehouse.Application.UoW
 {
@@ -7,6 +8,7 @@ namespace Warehouse.Application.UoW
     {
         IDepartmentRepository Department { get; }
         IProductRepository Product { get; }
+        IWorkerRepository Worker { get; }
         Task<bool> SaveChangesAsync();
     }
 }
