@@ -15,8 +15,10 @@ namespace Warehouse.DataContext.Configurations
                 .HasForeignKey(product => product.DeparmentId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasMany(department => department.Workers)
-                .WithMany(worker => worker.Departments);
+            builder.HasMany(department => department.WorkersDepartments)
+                .WithOne(wd => wd.Department)
+                .HasForeignKey(wd => wd.DepartmentId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasIndex(department => department.Name)
                 .IsUnique(true);

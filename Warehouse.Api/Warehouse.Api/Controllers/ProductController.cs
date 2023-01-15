@@ -24,6 +24,24 @@ namespace Warehouse.Api.Controllers
             return Ok(result);
         }
 
+        [HttpGet("get-all-products-with-dependencies")]
+        public async Task<IActionResult> GetAllWithDependencies()
+        {
+            GetAllProductsWithDependenciesQuery query = new GetAllProductsWithDependenciesQuery();
+
+            var result = await Mediator.Send(query);
+
+            return Ok(result);
+        }
+
+        [HttpPost("assign-department")]
+        public async Task<IActionResult> AssignDepartment(AssignDepartmentToProductCommand command)
+        {
+            var result = await Mediator.Send(command);
+
+            return Ok(result);
+        }
+
         [HttpPost("{id}")]
         public async Task<IActionResult> GetById(GetByIdProductQuery query)
         {

@@ -7,5 +7,6 @@ namespace Warehouse.Application.CQRS.Commands.Worker
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+
     }
 }

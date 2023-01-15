@@ -49,6 +49,13 @@ namespace Warehouse.DataContext.Repositories.Product
             return result;
         }
 
+        public void CreateDependencies(ProductEntity product)
+        {
+            Logger.LogInformation($"Creating dependencies between product: {product.Id} and department: {product.DeparmentId}");
+
+            DbSet.Update(product);
+        }
+
         public async Task<ProductModel> UpdateProductAsync(ProductEntity product)
         {
             Logger.LogInformation("Updating product with id... : {0}", product.Id);
@@ -56,6 +63,19 @@ namespace Warehouse.DataContext.Repositories.Product
             DbSet.Update(product);
 
             var result = Mapper.Map<ProductModel>(product);
+
+            return result;
+        }
+
+        public async Task<List<ProductModel>> GetAllWithDependenciesAsync()
+        {
+            Logger.LogInformation("Get all products with dependencies... ");
+
+            var entities = await DbSet.AsNoTracking()
+                .Include(product => product.Department)
+                .ToListAsync();
+
+            var result = Mapper.Map<List<ProductModel>>(entities);
 
             return result;
         }

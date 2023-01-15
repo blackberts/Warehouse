@@ -7,6 +7,6 @@
         public string LastName { get; set; }
         public string FullName { get; set; }
 
-        public List<Department> Departments { get; set; }
+        public List<WorkersDepartments> WorkersDepartments { get; set; }
     }
 }

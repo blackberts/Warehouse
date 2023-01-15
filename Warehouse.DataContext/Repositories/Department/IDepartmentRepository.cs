@@ -1,4 +1,5 @@
 ﻿using Warehouse.DataContext.Repositories.Base;
+using Warehouse.Domain.Models;
 using DepartmentEntity = Warehouse.Domain.Entities.Department;
 using DepartmentModel = Warehouse.Domain.Models.DepartmentModel;
 
@@ -6,6 +7,7 @@ namespace Warehouse.DataContext.Repositories.Department
 {
     public interface IDepartmentRepository : IRepository<DepartmentEntity, DepartmentModel>
     {
+        Task<List<DepartmentModel>> GetAllWithDependenciesAsync();
         Task<DepartmentModel> GetByIdAsync(Guid id);
         Task<DepartmentModel> CreateDepartmentAsync(DepartmentEntity department);
         Task<DepartmentModel> UpdateDepartmentAsync(DepartmentEntity department);

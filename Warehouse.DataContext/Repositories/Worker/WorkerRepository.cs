@@ -16,6 +16,20 @@ namespace Warehouse.DataContext.Repositories.Worker
         {
         }
 
+        public async Task<List<WorkerModel>> GetAllWithDependenciesAsync()
+        {
+            Logger.LogInformation("Get all workers with dependencies... ");
+
+            var entities = await DbSet.AsNoTracking()
+                .Include(worker => worker.WorkersDepartments)
+                    .ThenInclude(wd => wd.Department)
+                .ToListAsync();
+
+            var result = Mapper.Map<List<WorkerModel>>(entities);
+
+            return result;
+        }
+
         public async Task<WorkerModel> CreateWorkerAsync(WorkerEntity worker)
         {
             Logger.LogInformation("Creating new worker with id... {0}", worker.Id);

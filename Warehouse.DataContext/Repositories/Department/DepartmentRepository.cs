@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Warehouse.DataContext.Repositories.Base;
+using Warehouse.Domain.Models;
 using DepartmentEntity = Warehouse.Domain.Entities.Department;
 using DepartmentModel = Warehouse.Domain.Models.DepartmentModel;
 
@@ -31,6 +32,21 @@ namespace Warehouse.DataContext.Repositories.Department
             var entity = DbSet.Find(id);
 
             DbSet.Remove(entity);
+        }
+
+        public async Task<List<DepartmentModel>> GetAllWithDependenciesAsync()
+        {
+            Logger.LogInformation("Get all departments with dependencies... ");
+
+            var entities = await DbSet.AsNoTracking()
+                .Include(department => department.Products)
+                .Include(department => department.WorkersDepartments)
+                    .ThenInclude(wd => wd.Worker)
+                .ToListAsync();
+
+            var result = Mapper.Map<List<DepartmentModel>>(entities);
+
+            return result;
         }
 
         public async Task<DepartmentModel> GetByIdAsync(Guid id)

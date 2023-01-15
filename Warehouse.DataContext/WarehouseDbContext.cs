@@ -9,6 +9,7 @@ namespace Warehouse.DataContext
         public DbSet<Department> Departments { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Worker> Workers { get; set; }
+        public DbSet<WorkersDepartments> WorkersDepartments { get; set; }
 
         public WarehouseDbContext(DbContextOptions<WarehouseDbContext> options) : base(options) { }
 

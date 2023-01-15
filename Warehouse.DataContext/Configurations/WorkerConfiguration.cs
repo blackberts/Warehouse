@@ -10,8 +10,10 @@ namespace Warehouse.DataContext.Configurations
         {
             builder.HasKey(worker => worker.Id);
 
-            builder.HasMany(worker => worker.Departments)
-                .WithMany(department => department.Workers);
+            builder.HasMany(worker => worker.WorkersDepartments)
+                .WithOne(wd => wd.Worker)
+                .HasForeignKey(wd => wd.WorkerId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasIndex(worker => worker.FullName)
                 .IsUnique(true);

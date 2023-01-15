@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Warehouse.DataContext;
 
@@ -11,9 +12,11 @@ using Warehouse.DataContext;
 namespace Warehouse.DataContext.Migrations
 {
     [DbContext(typeof(WarehouseDbContext))]
-    partial class WarehouseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230115164514_ManyToManyWorkersDeparments")]
+    partial class ManyToManyWorkersDeparments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,10 +35,18 @@ namespace Warehouse.DataContext.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<Guid>("WorkersDepartmentsDepartmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("WorkersDepartmentsWorkerId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
                         .IsUnique();
+
+                    b.HasIndex("WorkersDepartmentsWorkerId", "WorkersDepartmentsDepartmentId");
 
                     b.ToTable("Departments");
                 });
@@ -81,10 +92,18 @@ namespace Warehouse.DataContext.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("WorkersDepartmentsDepartmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("WorkersDepartmentsWorkerId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("FullName")
                         .IsUnique();
+
+                    b.HasIndex("WorkersDepartmentsWorkerId", "WorkersDepartmentsDepartmentId");
 
                     b.ToTable("Workers");
                 });
@@ -99,9 +118,18 @@ namespace Warehouse.DataContext.Migrations
 
                     b.HasKey("WorkerId", "DepartmentId");
 
-                    b.HasIndex("DepartmentId");
-
                     b.ToTable("WorkersDepartments");
+                });
+
+            modelBuilder.Entity("Warehouse.Domain.Entities.Department", b =>
+                {
+                    b.HasOne("Warehouse.Domain.Entities.WorkersDepartments", "WorkersDepartments")
+                        .WithMany("Departments")
+                        .HasForeignKey("WorkersDepartmentsWorkerId", "WorkersDepartmentsDepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("WorkersDepartments");
                 });
 
             modelBuilder.Entity("Warehouse.Domain.Entities.Product", b =>
@@ -115,35 +143,27 @@ namespace Warehouse.DataContext.Migrations
                     b.Navigation("Department");
                 });
 
-            modelBuilder.Entity("Warehouse.Domain.Entities.WorkersDepartments", b =>
+            modelBuilder.Entity("Warehouse.Domain.Entities.Worker", b =>
                 {
-                    b.HasOne("Warehouse.Domain.Entities.Department", "Department")
-                        .WithMany("WorkersDepartments")
-                        .HasForeignKey("DepartmentId")
+                    b.HasOne("Warehouse.Domain.Entities.WorkersDepartments", "WorkersDepartments")
+                        .WithMany("Workers")
+                        .HasForeignKey("WorkersDepartmentsWorkerId", "WorkersDepartmentsDepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Warehouse.Domain.Entities.Worker", "Worker")
-                        .WithMany("WorkersDepartments")
-                        .HasForeignKey("WorkerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Department");
-
-                    b.Navigation("Worker");
+                    b.Navigation("WorkersDepartments");
                 });
 
             modelBuilder.Entity("Warehouse.Domain.Entities.Department", b =>
                 {
                     b.Navigation("Products");
-
-                    b.Navigation("WorkersDepartments");
                 });
 
-            modelBuilder.Entity("Warehouse.Domain.Entities.Worker", b =>
+            modelBuilder.Entity("Warehouse.Domain.Entities.WorkersDepartments", b =>
                 {
-                    b.Navigation("WorkersDepartments");
+                    b.Navigation("Departments");
+
+                    b.Navigation("Workers");
                 });
 #pragma warning restore 612, 618
         }

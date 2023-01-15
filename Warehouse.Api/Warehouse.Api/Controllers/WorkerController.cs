@@ -24,6 +24,16 @@ namespace Warehouse.Api.Controllers
             return Ok(result);
         }
 
+        [HttpGet("get-all-workers-with-dependencies")]
+        public async Task<IActionResult> GetAllWithDependencies()
+        {
+            GetAllWorkersWithDependenciesQuery query = new GetAllWorkersWithDependenciesQuery();
+
+            var result = await Mediator.Send(query);
+
+            return Ok(result);
+        }
+
         [HttpPost("{id}")]
         public async Task<IActionResult> GetById(GetByIdWorkerQuery query)
         {
@@ -58,6 +68,14 @@ namespace Warehouse.Api.Controllers
 
         [HttpPost("create-worker")]
         public async Task<IActionResult> Create(CreateWorkerCommand command)
+        {
+            var result = await Mediator.Send(command);
+
+            return Ok(result);
+        }
+
+        [HttpPost("assign-departments")]
+        public async Task<IActionResult> AssignDepartments(AssignDepartmentsToWorkerCommand command)
         {
             var result = await Mediator.Send(command);
 
