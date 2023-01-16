@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Warehouse.DataContext.Repositories.Base;
+using Warehouse.Domain.Models;
 using DepartmentEntity = Warehouse.Domain.Entities.Department;
 using DepartmentModel = Warehouse.Domain.Models.DepartmentModel;
 

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Warehouse.DataContext.Repositories.Base;
@@ -27,13 +28,14 @@ namespace Warehouse.DataContext.Repositories.Product
             return result;
         }
 
-        public void DeleteById(Guid id)
+        public void DeleteById(Guid productId)
         {
-            Logger.LogInformation("Delete product with id... {0}", id);
+            Logger.LogInformation("Delete product with id... {0}", productId);
 
-            var entity = DbSet.Find(id);
+            var id = new SqlParameter("@ProductId", productId);
 
-            DbSet.Remove(entity);
+            DbContext.Database.ExecuteSqlRaw("DELETE FROM Products " +
+               "WHERE ProductId = @ProductId ", id);
         }
 
         public async Task<ProductModel> GetByIdAsync(Guid id)
@@ -49,6 +51,13 @@ namespace Warehouse.DataContext.Repositories.Product
             return result;
         }
 
+        public void CreateDependencies(ProductEntity product)
+        {
+            Logger.LogInformation($"Creating dependencies between product: {product.Id} and department: {product.DeparmentId}");
+
+            DbSet.Update(product);
+        }
+
         public async Task<ProductModel> UpdateProductAsync(ProductEntity product)
         {
             Logger.LogInformation("Updating product with id... : {0}", product.Id);
@@ -56,6 +65,25 @@ namespace Warehouse.DataContext.Repositories.Product
             DbSet.Update(product);
 
             var result = Mapper.Map<ProductModel>(product);
+
+            return result;
+        }
+
+        public async Task<List<ProductModel>> GetAllWithDependenciesAsync()
+        {
+            Logger.LogInformation("Get all products with dependencies... ");
+
+            var entities = await DbSet.AsNoTracking()
+                .Include(product => product.Department)
+                .Select(product => new ProductEntity
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Department = product.Department,
+                })
+                .ToListAsync();
+
+            var result = Mapper.Map<List<ProductModel>>(entities);
 
             return result;
         }

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using MediatR;
+using Microsoft.Extensions.Logging;
 using Warehouse.Application.CQRS.Commands.Base;
 using Warehouse.Application.UoW;
 using Warehouse.Domain.Models;
@@ -7,14 +7,15 @@ using DepartmentEntity = Warehouse.Domain.Entities.Department;
 
 namespace Warehouse.Application.CQRS.Commands.Department
 {
-    public class CreateDepartmentCommandHandler : BaseCommandHandler, IRequestHandler<CreateDepartmentCommand, DepartmentModel>
+    public class CreateDepartmentCommandHandler : BaseCommandHandler<CreateDepartmentCommand, DepartmentModel>
     {
         public CreateDepartmentCommandHandler(IMapper mapper,
-            IUnitOfWork unitOfWork) : base(mapper, unitOfWork)
+            IUnitOfWork unitOfWork,
+            ILogger logger) : base(mapper, unitOfWork, logger)
         {
         }
 
-        public async Task<DepartmentModel> Handle(CreateDepartmentCommand request, CancellationToken cancellationToken)
+        protected override async Task<DepartmentModel> ExecuteAsync(CreateDepartmentCommand request, CancellationToken cancellationToken)
         {
             var newDepartment = new DepartmentEntity
             {

@@ -24,6 +24,16 @@ namespace Warehouse.Api.Controllers
             return Ok(result);
         }
 
+        [HttpGet("get-all-workers-with-dependencies")]
+        public async Task<IActionResult> GetAllWithDependencies()
+        {
+            GetAllWorkersWithDependenciesQuery query = new GetAllWorkersWithDependenciesQuery();
+
+            var result = await Mediator.Send(query);
+
+            return Ok(result);
+        }
+
         [HttpPost("{id}")]
         public async Task<IActionResult> GetById(GetByIdWorkerQuery query)
         {
@@ -32,8 +42,24 @@ namespace Warehouse.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost("update-worker")]
+        [HttpPut("update-worker")]
         public async Task<IActionResult> Update(UpdateWorkerCommand command)
+        {
+            var result = await Mediator.Send(command);
+
+            return Ok(result);
+        }
+
+        [HttpOptions("update-worker-firstName")]
+        public async Task<IActionResult> UpdateFirstName(UpdateWorkerFirstNameCommand command)
+        {
+            var result = await Mediator.Send(command);
+
+            return Ok(result);
+        }
+
+        [HttpOptions("update-worker-lastName")]
+        public async Task<IActionResult> UpdateLastName(UpdateWorkerLastNameCommand command)
         {
             var result = await Mediator.Send(command);
 
@@ -48,7 +74,15 @@ namespace Warehouse.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost("delete-worker")]
+        [HttpPost("assign-departments")]
+        public async Task<IActionResult> AssignDepartments(AssignDepartmentsToWorkerCommand command)
+        {
+            var result = await Mediator.Send(command);
+
+            return Ok(result);
+        }
+
+        [HttpDelete("delete-worker")]
         public async Task<IActionResult> Delete(DeleteWorkerCommand command)
         {
             var result = await Mediator.Send(command);

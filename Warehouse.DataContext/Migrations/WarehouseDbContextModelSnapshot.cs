@@ -22,21 +22,6 @@ namespace Warehouse.DataContext.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("DepartmentWorker", b =>
-                {
-                    b.Property<Guid>("DepartmentsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("WorkersId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("DepartmentsId", "WorkersId");
-
-                    b.HasIndex("WorkersId");
-
-                    b.ToTable("DepartmentWorker");
-                });
-
             modelBuilder.Entity("Warehouse.Domain.Entities.Department", b =>
                 {
                     b.Property<Guid>("Id")
@@ -104,19 +89,19 @@ namespace Warehouse.DataContext.Migrations
                     b.ToTable("Workers");
                 });
 
-            modelBuilder.Entity("DepartmentWorker", b =>
+            modelBuilder.Entity("Warehouse.Domain.Entities.WorkersDepartments", b =>
                 {
-                    b.HasOne("Warehouse.Domain.Entities.Department", null)
-                        .WithMany()
-                        .HasForeignKey("DepartmentsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<Guid>("WorkerId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasOne("Warehouse.Domain.Entities.Worker", null)
-                        .WithMany()
-                        .HasForeignKey("WorkersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<Guid>("DepartmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("WorkerId", "DepartmentId");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.ToTable("WorkersDepartments");
                 });
 
             modelBuilder.Entity("Warehouse.Domain.Entities.Product", b =>
@@ -130,9 +115,35 @@ namespace Warehouse.DataContext.Migrations
                     b.Navigation("Department");
                 });
 
+            modelBuilder.Entity("Warehouse.Domain.Entities.WorkersDepartments", b =>
+                {
+                    b.HasOne("Warehouse.Domain.Entities.Department", "Department")
+                        .WithMany("WorkersDepartments")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Warehouse.Domain.Entities.Worker", "Worker")
+                        .WithMany("WorkersDepartments")
+                        .HasForeignKey("WorkerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Worker");
+                });
+
             modelBuilder.Entity("Warehouse.Domain.Entities.Department", b =>
                 {
                     b.Navigation("Products");
+
+                    b.Navigation("WorkersDepartments");
+                });
+
+            modelBuilder.Entity("Warehouse.Domain.Entities.Worker", b =>
+                {
+                    b.Navigation("WorkersDepartments");
                 });
 #pragma warning restore 612, 618
         }

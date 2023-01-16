@@ -6,6 +6,8 @@ namespace Warehouse.DataContext.Repositories.Product
 {
     public interface IProductRepository : IRepository<ProductEntity, ProductModel>
     {
+        Task<List<ProductModel>> GetAllWithDependenciesAsync();
+        void CreateDependencies(ProductEntity product);
         Task<ProductModel> GetByIdAsync(Guid id);
         Task<ProductModel> CreateProductAsync(ProductEntity product);
         Task<ProductModel> UpdateProductAsync(ProductEntity product);

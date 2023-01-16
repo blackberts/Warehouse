@@ -4,6 +4,7 @@ using Warehouse.DataContext;
 using Warehouse.DataContext.Repositories.Department;
 using Warehouse.DataContext.Repositories.Product;
 using Warehouse.DataContext.Repositories.Worker;
+using Warehouse.DataContext.Repositories.WorkersDepartments;
 
 namespace Warehouse.Application.UoW
 {
@@ -46,6 +47,15 @@ namespace Warehouse.Application.UoW
             get
             {
                 return _workerRepository ??= new WorkerRepository(_logger, _mapper, _dbContext);
+            }
+        }
+
+        private IWorkersDepartmentsRepository _workersDepartmentsRepository;
+        public IWorkersDepartmentsRepository WorkersDepartments
+        {
+            get
+            {
+                return _workersDepartmentsRepository ??= new WorkersDepartmentsRepository(_logger, _mapper, _dbContext);
             }
         }
 

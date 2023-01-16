@@ -9,6 +9,8 @@ namespace Warehouse.DataContext.Repositories.Worker
         Task<WorkerModel> GetByIdAsync(Guid id);
         Task<WorkerModel> CreateWorkerAsync(WorkerEntity worker);
         Task<WorkerModel> UpdateWorkerAsync(WorkerEntity worker);
+        Task<WorkerModel> UpdateWorkerFirstNameAsync(WorkerEntity worker);
+        Task<WorkerModel> UpdateWorkerLastNameAsync(WorkerEntity worker);
         void DeleteById(Guid id);
     }
 }

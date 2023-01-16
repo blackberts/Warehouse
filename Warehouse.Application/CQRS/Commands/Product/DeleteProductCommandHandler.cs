@@ -1,18 +1,21 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Warehouse.Application.CQRS.Commands.Base;
 using Warehouse.Application.UoW;
+using Warehouse.Domain.Models;
 
 namespace Warehouse.Application.CQRS.Commands.Product
 {
-    public class DeleteProductCommandHandler : BaseCommandHandler, IRequestHandler<DeleteProductCommand>
+    public class DeleteProductCommandHandler : BaseCommandHandler<DeleteProductCommand, Unit>
     {
         public DeleteProductCommandHandler(IMapper mapper,
-            IUnitOfWork unitOfWork) : base(mapper, unitOfWork)
+            IUnitOfWork unitOfWork,
+            ILogger logger) : base(mapper, unitOfWork, logger)
         {
         }
 
-        public async Task<Unit> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
+        protected override async Task<Unit> ExecuteAsync(DeleteProductCommand request, CancellationToken cancellationToken)
         {
             UnitOfWork.Product.DeleteById(request.Id);
 
