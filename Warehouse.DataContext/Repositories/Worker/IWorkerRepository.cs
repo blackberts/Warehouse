@@ -6,7 +6,6 @@ namespace Warehouse.DataContext.Repositories.Worker
 {
     public interface IWorkerRepository : IRepository<WorkerEntity, WorkerModel>
     {
-        Task<List<WorkerModel>> GetAllWithDependenciesAsync();
         Task<WorkerModel> GetByIdAsync(Guid id);
         Task<WorkerModel> CreateWorkerAsync(WorkerEntity worker);
         Task<WorkerModel> UpdateWorkerAsync(WorkerEntity worker);

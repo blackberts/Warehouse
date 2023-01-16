@@ -6,7 +6,7 @@ using Warehouse.Domain.Models;
 
 namespace Warehouse.Application.CQRS.Queries.Worker
 {
-    public class GetAllWorkersWithDependenciesQueryHandler : BaseQueryHandler<GetAllWorkersWithDependenciesQuery, List<WorkerModel>>
+    public class GetAllWorkersWithDependenciesQueryHandler : BaseQueryHandler<GetAllWorkersWithDependenciesQuery, List<WorkersDepartmentsModel>>
     {
         public GetAllWorkersWithDependenciesQueryHandler(IMapper mapper,
             IUnitOfWork unitOfWork,
@@ -14,9 +14,9 @@ namespace Warehouse.Application.CQRS.Queries.Worker
         {
         }
 
-        protected override async Task<List<WorkerModel>> ExecuteAsync(GetAllWorkersWithDependenciesQuery request, CancellationToken cancellationToken)
+        protected override async Task<List<WorkersDepartmentsModel>> ExecuteAsync(GetAllWorkersWithDependenciesQuery request, CancellationToken cancellationToken)
         {
-            var listOfModels = await UnitOfWork.Worker.GetAllWithDependenciesAsync();
+            var listOfModels = await UnitOfWork.WorkersDepartments.GetAllWorkersWithDependenciesAsync();
 
             if (listOfModels is null || listOfModels.Count == 0)
             {

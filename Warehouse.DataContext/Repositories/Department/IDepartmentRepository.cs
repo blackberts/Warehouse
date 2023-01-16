@@ -7,7 +7,6 @@ namespace Warehouse.DataContext.Repositories.Department
 {
     public interface IDepartmentRepository : IRepository<DepartmentEntity, DepartmentModel>
     {
-        Task<List<DepartmentModel>> GetAllWithDependenciesAsync();
         Task<DepartmentModel> GetByIdAsync(Guid id);
         Task<DepartmentModel> CreateDepartmentAsync(DepartmentEntity department);
         Task<DepartmentModel> UpdateDepartmentAsync(DepartmentEntity department);

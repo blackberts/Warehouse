@@ -10,10 +10,10 @@ namespace Warehouse.DataContext.Configurations
         {
             builder.HasKey(department => department.Id);
 
-            builder.HasMany(department => department.Products)
-                .WithOne(product => product.Department)
-                .HasForeignKey(product => product.DeparmentId)
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder.HasMany(department => department.Products)
+            //    .WithOne(product => product.Department)
+            //    .HasForeignKey(product => product.DeparmentId)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(department => department.WorkersDepartments)
                 .WithOne(wd => wd.Department)

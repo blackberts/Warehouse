@@ -38,6 +38,7 @@ namespace Warehouse.Application.CQRS.Commands.Department
                 var productEntity = new ProductEntity
                 {
                     Id = productId,
+                    Name = productModel.Name,
                     DeparmentId = departmentModel.Id
                 };
 

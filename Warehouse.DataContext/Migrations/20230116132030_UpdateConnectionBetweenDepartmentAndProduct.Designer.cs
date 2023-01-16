@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Warehouse.DataContext;
 
@@ -11,9 +12,11 @@ using Warehouse.DataContext;
 namespace Warehouse.DataContext.Migrations
 {
     [DbContext(typeof(WarehouseDbContext))]
-    partial class WarehouseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230116132030_UpdateConnectionBetweenDepartmentAndProduct")]
+    partial class UpdateConnectionBetweenDepartmentAndProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,13 +52,16 @@ namespace Warehouse.DataContext.Migrations
                     b.Property<Guid>("DeparmentId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("DepartmentId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DeparmentId");
+                    b.HasIndex("DepartmentId");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -108,8 +114,8 @@ namespace Warehouse.DataContext.Migrations
                 {
                     b.HasOne("Warehouse.Domain.Entities.Department", "Department")
                         .WithMany("Products")
-                        .HasForeignKey("DeparmentId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Department");

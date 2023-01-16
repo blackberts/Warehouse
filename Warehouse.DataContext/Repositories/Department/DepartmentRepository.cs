@@ -34,21 +34,6 @@ namespace Warehouse.DataContext.Repositories.Department
             DbSet.Remove(entity);
         }
 
-        public async Task<List<DepartmentModel>> GetAllWithDependenciesAsync()
-        {
-            Logger.LogInformation("Get all departments with dependencies... ");
-
-            var entities = await DbSet.AsNoTracking()
-                .Include(department => department.Products)
-                .Include(department => department.WorkersDepartments)
-                    .ThenInclude(wd => wd.Worker)
-                .ToListAsync();
-
-            var result = Mapper.Map<List<DepartmentModel>>(entities);
-
-            return result;
-        }
-
         public async Task<DepartmentModel> GetByIdAsync(Guid id)
         {
             Logger.LogInformation("Finding department with id... : {0} ", id);

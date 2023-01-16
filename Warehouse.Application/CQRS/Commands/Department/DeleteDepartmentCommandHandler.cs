@@ -17,6 +17,7 @@ namespace Warehouse.Application.CQRS.Commands.Department
 
         protected override async Task<Unit> ExecuteAsync(DeleteDepartmentCommand request, CancellationToken cancellationToken)
         {
+            UnitOfWork.WorkersDepartments.DeleteByIdDepartment(request.Id);
             UnitOfWork.Department.DeleteById(request.Id);
 
             await UnitOfWork.SaveChangesAsync();

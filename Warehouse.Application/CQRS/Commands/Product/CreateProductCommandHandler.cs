@@ -21,15 +21,25 @@ namespace Warehouse.Application.CQRS.Commands.Product
             var newProduct = new ProductEntity
             {
                 Id = Guid.NewGuid(),
-                Name = request.Name
+                Name = request.Name,
+                DeparmentId = request.DepartmentId
             };
 
-            var productModel = await UnitOfWork.Product.CreateProductAsync(newProduct);
+            UnitOfWork.Product.CreateDependencies(newProduct);
+            var departmentModel = await UnitOfWork.Department.GetByIdAsync(request.DepartmentId);
+
+            if (departmentModel is null)
+            {
+                throw new ArgumentNullException("Cannot find department");
+            }
+          
+            var productModel = await UnitOfWork.Product.CreateProductAsync(newProduct);          
 
             if (productModel is null)
             {
                 throw new ArgumentNullException("Something wrong when created product... ");
             }
+
 
             await UnitOfWork.SaveChangesAsync();
 

@@ -73,6 +73,12 @@ namespace Warehouse.DataContext.Repositories.Product
 
             var entities = await DbSet.AsNoTracking()
                 .Include(product => product.Department)
+                .Select(product => new ProductEntity
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Department = product.Department,
+                })
                 .ToListAsync();
 
             var result = Mapper.Map<List<ProductModel>>(entities);

@@ -5,6 +5,9 @@ using Microsoft.Extensions.Logging;
 using Warehouse.DataContext.Repositories.Base;
 using Warehouse.Domain.Models;
 using WorkerEntity = Warehouse.Domain.Entities.Worker;
+using WorkersDepartmentsEntity = Warehouse.Domain.Entities.WorkersDepartments;
+using DepartmentEntity = Warehouse.Domain.Entities.Department;
+using ProductEntity = Warehouse.Domain.Entities.Product;
 
 namespace Warehouse.DataContext.Repositories.Worker
 {
@@ -14,20 +17,6 @@ namespace Warehouse.DataContext.Repositories.Worker
             IMapper mapper,
             WarehouseDbContext dbContext) : base(logger, mapper, dbContext)
         {
-        }
-
-        public async Task<List<WorkerModel>> GetAllWithDependenciesAsync()
-        {
-            Logger.LogInformation("Get all workers with dependencies... ");
-
-            var entities = await DbSet.AsNoTracking()
-                .Include(worker => worker.WorkersDepartments)
-                    .ThenInclude(wd => wd.Department)
-                .ToListAsync();
-
-            var result = Mapper.Map<List<WorkerModel>>(entities);
-
-            return result;
         }
 
         public async Task<WorkerModel> CreateWorkerAsync(WorkerEntity worker)
