@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Warehouse.DataContext.Repositories.Base;
@@ -27,13 +28,14 @@ namespace Warehouse.DataContext.Repositories.Product
             return result;
         }
 
-        public void DeleteById(Guid id)
+        public void DeleteById(Guid productId)
         {
-            Logger.LogInformation("Delete product with id... {0}", id);
+            Logger.LogInformation("Delete product with id... {0}", productId);
 
-            var entity = DbSet.Find(id);
+            var id = new SqlParameter("@ProductId", productId);
 
-            DbSet.Remove(entity);
+            DbContext.Database.ExecuteSqlRaw("DELETE FROM Products " +
+               "WHERE ProductId = @ProductId ", id);
         }
 
         public async Task<ProductModel> GetByIdAsync(Guid id)

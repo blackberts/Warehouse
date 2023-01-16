@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Warehouse.DataContext.Repositories.Base;
@@ -23,22 +24,24 @@ namespace Warehouse.DataContext.Repositories.WorkersDepartments
             DbSet.Add(wd);
         }
 
-        public void DeleteByIdDepartment(Guid id)
+        public void DeleteByIdDepartment(Guid departmentId)
         {
-            Logger.LogInformation("Delete department with id... {0}", id);
+            Logger.LogInformation("Delete department with id... {0}", departmentId);
 
-            var entity = DbSet.Find(id);
+            var id = new SqlParameter("@DepartmentId", departmentId);
 
-            DbSet.Remove(entity);
+            DbContext.Database.ExecuteSqlRaw("DELETE FROM WorkersDepartments " +
+               "WHERE DepartmentId = @DepartmentId ", id);
         }
 
-        public void DeleteByIdWorker(Guid id)
+        public void DeleteByIdWorker(Guid workerId)
         {
-            Logger.LogInformation("Delete worker with id... {0}", id);
+            Logger.LogInformation("Delete worker with id... {0}", workerId);
 
-            var entity = DbSet.Find(id);
+            var id = new SqlParameter("@WorkerId", workerId);
 
-            DbSet.Remove(entity);
+             DbContext.Database.ExecuteSqlRaw("DELETE FROM WorkersDepartments " +
+                "WHERE WorkerId = @WorkerId ",  id);
         }
 
         public async Task<List<WorkersDepartmentsModel>> GetAllDepartmentsWithDependenciesAsync()

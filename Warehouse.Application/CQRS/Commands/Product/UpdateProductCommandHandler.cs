@@ -22,7 +22,7 @@ namespace Warehouse.Application.CQRS.Commands.Product
 
             if (productModel is null)
             {
-                throw new ArgumentNullException("Cannot find product... ");
+                throw new ArgumentNullException($"Cannot find product with id... : {request.Id} ");
             }
 
             var productEntity = new ProductEntity

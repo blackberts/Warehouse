@@ -23,7 +23,7 @@ namespace Warehouse.Application.CQRS.Commands.Department
 
             if(departmentModel is null) 
             {
-                throw new ArgumentNullException("Cannot find department");
+                throw new ArgumentNullException($"Cannot find department with id... : {request.DepartmentId}");
             }
 
             foreach(var productId in request.ProductIds)
@@ -32,7 +32,7 @@ namespace Warehouse.Application.CQRS.Commands.Department
 
                 if(productModel is null)
                 {
-                    throw new ArgumentNullException("Cannot find product");
+                    throw new ArgumentNullException($"Cannot find product with id... : {productId}");
                 }
 
                 var productEntity = new ProductEntity

@@ -22,7 +22,7 @@ namespace Warehouse.Application.CQRS.Commands.Department
 
             if(departmentModel is null)
             {
-                throw new ArgumentNullException("Cannot find department... ");
+                throw new ArgumentNullException($"Cannot find department with id... : {request.Id} ");
             }
 
             var deparmentEntity = new DepartmentEntity

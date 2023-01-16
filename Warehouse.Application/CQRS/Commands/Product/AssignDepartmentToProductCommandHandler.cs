@@ -21,14 +21,14 @@ namespace Warehouse.Application.CQRS.Commands.Product
 
             if(productModel is null)
             {
-                throw new ArgumentNullException("Cannot find product");
+                throw new ArgumentNullException($"Cannot find product with id... : {request.ProductId}");
             }
 
             var departmentModel = await UnitOfWork.Product.GetByIdAsync(request.DepartmentId);
 
             if(departmentModel is null)
             {
-                throw new ArgumentNullException("Cannot find department");
+                throw new ArgumentNullException($"Cannot find department with id... : {request.DepartmentId}");
             }
 
             var productEntity = new ProductEntity

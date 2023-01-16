@@ -21,7 +21,7 @@ namespace Warehouse.Application.CQRS.Commands.Worker
 
             if (workerModel is null)
             {
-                throw new ArgumentNullException("Cannot find worker... ");
+                throw new ArgumentNullException($"Cannot find worker with id... :  {request.Id}");
             }
 
             var workerEntity = new WorkerEntity

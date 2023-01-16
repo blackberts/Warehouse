@@ -21,7 +21,7 @@ namespace Warehouse.Application.CQRS.Queries.Department
 
             if(departmentModel is null)
             {
-                throw new ArgumentNullException("Cannot find department... ");
+                throw new ArgumentNullException($"Cannot find department with id... : {request.Id} ");
             }
 
             return departmentModel;

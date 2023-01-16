@@ -30,7 +30,7 @@ namespace Warehouse.Application.CQRS.Commands.Product
 
             if (departmentModel is null)
             {
-                throw new ArgumentNullException("Cannot find department");
+                throw new ArgumentNullException($"Cannot find department with id... : {request.DepartmentId}");
             }
           
             var productModel = await UnitOfWork.Product.CreateProductAsync(newProduct);          

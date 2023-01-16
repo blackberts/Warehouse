@@ -21,7 +21,7 @@ namespace Warehouse.Application.CQRS.Commands.Department
 
             if(departmentModel is null)
             {
-                throw new ArgumentNullException("Cannot find department");
+                throw new ArgumentNullException($"Cannot find department with id... : {request.DepartmentId}");
             }
 
             foreach(var workerId in request.WorkerIds)
@@ -30,7 +30,7 @@ namespace Warehouse.Application.CQRS.Commands.Department
 
                 if(workerModel is null)
                 {
-                    throw new ArgumentNullException("Cannot find worker");
+                    throw new ArgumentNullException($"Cannot find worker with id... : {workerId}");
                 }
 
                 var workerDepartments = new WorkersDepartments
