@@ -56,7 +56,13 @@ namespace Warehouse.DataContext.Repositories.Worker
         {
             Logger.LogInformation("Updating worker with id... : {0}", worker.Id);
 
-            DbSet.Update(worker);
+            var id = new SqlParameter("@Id", worker.Id);
+            var firstName = new SqlParameter("@FirstName", worker.FirstName);
+            var lastName = new SqlParameter("@LastName", worker.LastName);
+            var fullName = new SqlParameter("@FullName", worker.FullName);
+
+            await DbContext.Database.ExecuteSqlRawAsync("UPDATE Workers SET FirstName = @FirstName, LastName = @LastName, FullName = @FullName " +
+                "WHERE Id = @Id ", firstName, lastName, fullName, id);
 
             var result = Mapper.Map<WorkerModel>(worker);
 
